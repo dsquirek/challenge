@@ -21,25 +21,23 @@ public class FileReader {
 		this.path = path;
 	}
 
-	public Map<Integer, String> numberOfWordsInDocument() {
-		return getwords(readFile(path));
+	public void numberOfWordsInDocument() {
+		getwords(readFile(path));
 	}
 
-	public Map<Integer, String> getwords(String doc) {
-		return countWords(scrubPuctutation(Arrays.asList(doc.toLowerCase().split(" "))));
+	public void getwords(String doc) {
+		countWords(scrubPuctutation(Arrays.asList(doc.toLowerCase().split(" "))));
 	}
 
 	public List<String> scrubPuctutation(List<String> words) {
 		return words.stream().map(x -> x.replaceAll(",", "")).collect(Collectors.toList());
 	}
 
-	public Map<Integer, String> countWords(List<String> words) {
-		Map<Integer, String> wordMap = new HashMap<>();
+	public void countWords(List<String> words) {
 		Set<String> wordSet = new HashSet<String>(words);
 		wordSet.forEach(x -> {
-			wordMap.put(Collections.frequency(words, x), x);
+			System.out.println("word " + x + " appears " + Collections.frequency(words, x) + " times");
 		});
-		return wordMap;
 	}
 
 	public String readFile(String path) {

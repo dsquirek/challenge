@@ -36,10 +36,8 @@ public class App {
 
 	public void wordCountTest() {
 		FileReader reader = new FileReader("file path");
-		Map<Integer, String> words = reader.getwords(
+		reader.getwords(
 				"Hello world hello this is only only just a test, again this is only a test hello world");
-		words.entrySet().forEach(x -> System.out.println(x.getValue() + " " + x.getKey()));
-		System.out.println(words.size());
 		System.out.println("done");
 	}
 }
