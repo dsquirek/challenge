@@ -14,10 +14,10 @@ import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-public class FileReader {
+public class DocumentWordCounter {
 	private String path;
-	
-	public FileReader(String path){
+
+	public DocumentWordCounter(String path) {
 		this.path = path;
 	}
 
@@ -25,8 +25,10 @@ public class FileReader {
 		getwords(readFile(path));
 	}
 
-	public void getwords(String doc) {
+	public Map<String, Integer> getwords(String doc) {
 		countWords(scrubPuctutation(Arrays.asList(doc.toLowerCase().split(" "))));
+		System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
+		return countWordsNoFrequency(scrubPuctutation(Arrays.asList(doc.toLowerCase().split(" "))));
 	}
 
 	public List<String> scrubPuctutation(List<String> words) {
@@ -40,9 +42,30 @@ public class FileReader {
 		});
 	}
 
+	public Map<String, Integer> countWordsNoFrequency(List<String> words) {
+		Collections.sort(words);
+		Map<String, Integer> wordData = new HashMap<>();
+		for (int i = 0; i < words.size(); i++) {
+			String str = words.get(i);
+			int count = 1;
+			for (int j = i + 1; j < words.size(); j++) {
+				if (str.equals(words.get(j))) {
+					count++;
+				} else {
+					i = j - 1;
+					break;
+				}
+			}
+			if (!wordData.containsKey(str)) {
+				System.out.println("word " + str + " appears " + count + " times");
+				wordData.put(str, count);
+			}
+		}
+		return wordData;
+	}
+
 	public String readFile(String path) {
-		try (BufferedReader reader = new BufferedReader(
-				new InputStreamReader(new FileInputStream(new File(path))))) {
+		try (BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream(new File(path))))) {
 			StringBuilder sb = new StringBuilder();
 			String str;
 			while ((str = reader.readLine()) != null) {
